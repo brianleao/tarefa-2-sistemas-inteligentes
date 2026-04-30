@@ -107,8 +107,13 @@ y_pred_mlp = mlp_final.predict(X_test)
 mse_cart = mean_squared_error(y_test, y_pred_cart)
 mse_mlp = mean_squared_error(y_test, y_pred_mlp)
 
-print(f"\n  MSE CART (teste cego) : {mse_cart:.6f}")
-print(f"  MSE MLP  (teste cego) : {mse_mlp:.6f}")
+se_cart = (y_test - y_pred_cart) ** 2
+se_mlp = (y_test - y_pred_mlp) ** 2
+std_cart = np.std(se_cart)
+std_mlp = np.std(se_mlp)
+
+print(f"\n  MSE CART (teste cego) : {mse_cart:.6f}  |  std: {std_cart:.6f}")
+print(f"  MSE MLP  (teste cego) : {mse_mlp:.6f}  |  std: {std_mlp:.6f}")
 
 # tabela comparativa
 print("\nTABELA COMPARATIVA - TESTE CEGO")
@@ -196,11 +201,13 @@ for b, label in enumerate(bin_labels):
 final = {
     "cart": {
         "mse_teste": float(mse_cart),
+        "std_teste": float(std_cart),
         "mean_val_mse": cart_summary["mean_val_mse"],
         "mse_por_intervalo": mse_cart_bins,
     },
     "mlp": {
         "mse_teste": float(mse_mlp),
+        "std_teste": float(std_mlp),
         "mean_val_mse": mlp_summary["mean_val_mse"],
         "mse_por_intervalo": mse_mlp_bins,
     },
